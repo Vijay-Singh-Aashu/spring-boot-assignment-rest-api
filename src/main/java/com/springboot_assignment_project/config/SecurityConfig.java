@@ -14,8 +14,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/api/users/register", "/api/users/verify/**").permitAll().anyRequest()
-				.authenticated().and().csrf().disable();
+		http
+		.authorizeRequests()
+		.antMatchers("/api/users/register", "/api/users/verify/**", "/api/users/password-reset/request", "/api/users/password-reset/reset").permitAll()
+		.anyRequest()
+				.authenticated()
+				.and()
+				.csrf()
+				.disable();
 	}
 	
 	@Bean

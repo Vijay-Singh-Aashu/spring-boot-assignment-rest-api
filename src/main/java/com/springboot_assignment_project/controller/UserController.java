@@ -19,6 +19,7 @@ import com.springboot_assignment_project.service.UserService;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
 	private final UserService userService;
 
 	@Autowired
@@ -52,6 +53,21 @@ public class UserController {
 			response.put("error", "Email verification failed: Invalid verification token.");
 			return ResponseEntity.badRequest().body(response);
 		}
+	}
+
+	@PostMapping("/password-reset/request")
+	public ResponseEntity<String> requestPasswordReset(@RequestBody Map<String, String> request) {
+		String email = request.get("email");
+		userService.requestPasswordReset(email);
+		return ResponseEntity.ok("Password reset email sent successfully.");
+	}
+
+	@PostMapping("/password-reset/reset")
+	public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetRequest) {
+		String token = resetRequest.get("token");
+		String newPassword = resetRequest.get("newPassword");
+		userService.resetPassword(token, newPassword);
+		return ResponseEntity.ok("Password reset successfully.");
 	}
 
 }
